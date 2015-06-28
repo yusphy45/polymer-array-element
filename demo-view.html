@@ -1,0 +1,18 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="yusp-str-list.html">
+<link rel="import" href="yusp-object.html">
+
+<dom-module id="demo-view-obj">
+    <template>
+        <yusp-str-list value="[[arrData]]" id="a1"></yusp-str-list>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'demo-view-obj',
+        ready: function () {
+            this.arrData = ['1', '2', '3'];
+        }
+    });
+</script>

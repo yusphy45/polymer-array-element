@@ -1,0 +1,26 @@
+{
+  "name": "polymer-obj-arr-element",
+  "version": "0.0.0",
+  "description": "polymer-custom-element",
+  "main": "index.html",
+  "keywords": [
+    "polymer",
+    "element"
+  ],
+  "authors": [
+    "yusphy45"
+  ],
+  "license": "MIT",
+  "homepage": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~1.0.4",
+    "paper-button": "PolymerElements/paper-button#^1.0.0"
+  }
+}

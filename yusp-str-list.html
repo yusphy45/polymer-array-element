@@ -1,0 +1,180 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<dom-module id="yusp-str-list">
+  <style>
+    *, *:before, *:after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    #arrList {
+      margin: 15px 0;
+      width: 100%;
+      border: 1px solid #D2D2D2;
+      list-style: none;
+    }
+
+    #arrList li {
+      position: relative;
+      min-height: 38px;
+      padding-right: 130px;
+      padding-left: 20px;
+      line-height: 24px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .yusp-arr-content {
+      padding: 12px 10px;
+      overflow-wrap: break-word;
+    }
+
+    .yusp-arr-controll {
+      position: absolute;
+      padding: 12px 0;
+      right: 20px;
+      top: 0;
+      width: 90px;
+      text-align: center;
+    }
+
+    .yusp-arr-controll span {
+      display: inline-block;
+      padding: 0 6px;
+      color: #D2D2D2;
+      cursor: pointer;
+    }
+
+    .yusp-arr-controll span.yusp-arr-up:hover, #arrList span.yusp-arr-down:hover {
+      color: blue
+    }
+
+    .yusp-arr-controll span.yusp-arr-rm:hover {
+      color: red;
+    }
+
+    .yusp-arr-form {
+      margin-bottom: 15px;
+      padding: 0 20px;
+      text-align: right;
+    }
+
+    .yusp-arr-form label, .yusp-arr-form input, .yusp-arr-form button {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 16px;
+      line-height: 16px;
+      height: 30px;
+      color: #333;
+    }
+
+    .yusp-arr-form label {
+      font-weight: bold;
+    }
+
+    .yusp-arr-form button {
+      width: 60px;
+      border-radius: 4px;
+      border: none;
+      text-align: center;
+      font-size: 16px;
+      line-height: 30px;
+    }
+
+    .yusp-arr-save button {
+      width: 120px;
+      border-radius: 4px;
+      border: none;
+      text-align: center;
+      font-size: 16px;
+      line-height: 30px;
+    }
+
+  </style>
+  <template>
+    <ol id="arrList">
+      <template is="dom-repeat" items="{{data}}">
+        <li data-value$="{{item}}">
+          <div class="yusp-arr-content">{{item}}</div>
+          <div class="yusp-arr-controll">
+            <span class="yusp-arr-up" on-Click="moveUp">⬆️</span>
+            <span class="yusp-arr-down" on-Click="moveDown">⬇️</span>
+            <span class="yusp-arr-rm" on-Click="removeItem">♻️</span>
+          </div>
+        </li>
+      </template>
+    </ol>
+    <div class="yusp-arr-form">
+      <label for="arrElement">value:</label>
+      <input type="text" id="arrElement">
+      <paper-button raised on-Click="createItem">Insert</paper-button>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  YuspStrArr = Polymer({
+    is: 'yusp-str-list',
+    properties: {
+      data: {
+        type: Array,
+        notify: true,
+        value: []
+      },
+      value: {
+        type: Array,
+        notify: true,
+        observer: 'ready',
+        value: []
+      }
+    },
+    ready: function () {
+      var that = this;
+      this.set('data', []);
+      this.value.forEach(function (value, index) {
+        that.push('data', value);
+      });
+    },
+    getIndex: function (dom) {
+      var parent = dom.parentElement;
+      var list = parent.querySelectorAll('li');
+      var index = -1;
+      [].forEach.call(list, function (value, i) {
+        index = dom === value ? i : index;
+      });
+      return index;
+    },
+    createItem: function () {
+      var el = this.$$('#arrElement');
+      this.push('value', el.value);
+      this.ready();
+    },
+    removeItem: function (e) {
+      var el = e.target.parentElement.parentElement;
+      var index = this.getIndex(el);
+      this.splice('value', index, 1);
+      this.ready();
+    },
+    moveUp: function (e) {
+      var el = e.target.parentElement.parentElement;
+      var index = this.getIndex(el);
+      if (index != 0) {
+        var current = this.value[index];
+        var pre = this.value[index - 1];
+        this.splice('value', index - 1, 2, current, pre);
+      }
+      this.ready();
+    },
+    moveDown: function (e) {
+      var el = e.target.parentElement.parentElement;
+      var index = this.getIndex(el);
+      if (index != this.value.length - 1) {
+        var current = this.value[index];
+        var next = this.value[index + 1];
+        this.splice('value', index - 1, 2, next, current);
+      }
+      this.ready();
+    }
+  });
+</script>
